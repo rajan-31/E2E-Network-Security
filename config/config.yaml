@@ -2,8 +2,7 @@
 artifacts_root: artifacts
 
 data_ingestion:
-    root_dir: artifacts/data_ingestion ## root directory
-    source_dir: NetworkSecurity/PriorETL/data.csv ##read from
-    ingested_dir: artifacts/data_ingestion ## data ingestion
+    ingestion_dir: artifacts/data_ingestion ## root directory
     collection_name: NetworkData
     database_name: PhishingData
+    file_name: datafromDB.csv
