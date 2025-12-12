@@ -6,7 +6,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import GradientBoostingClassifier, AdaBoostClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
-# from xgboost import XGBClassifier
+from xgboost import XGBClassifier
 import mlflow
 from sklearn.preprocessing import StandardScaler
 import pickle
@@ -14,6 +14,7 @@ from urllib.parse import urlparse
 from mlflow.models import infer_signature
 from sklearn.model_selection import GridSearchCV
 from dotenv import load_dotenv
+import datetime
 import os
 from src.NetworkSecurity.entity.config_entity import ModelTrainerConfig
 
@@ -42,7 +43,8 @@ class ModelTrainer:
             "GradientBoostingClassifier": GradientBoostingClassifier(),
             "AdaBoostClassifier": AdaBoostClassifier(),
             "KNeighborsClassifier": KNeighborsClassifier(),
-            "SVC": SVC()
+            "SVC": SVC(),
+            "XGBClassifier": XGBClassifier(),
         }
 
         # Standardize features
