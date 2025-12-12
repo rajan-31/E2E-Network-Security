@@ -3,3 +3,5 @@ __pycache__
 .e2e_nw_sec
 .env
 logs/
+load_test.sh
+actions-runner/

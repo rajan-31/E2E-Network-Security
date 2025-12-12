@@ -1,0 +1,3 @@
+Model: XGBClassifier
+Best Params: {'learning_rate': 0.2, 'max_depth': 10, 'n_estimators': 200, 'subsample': 0.8}
+Train Accuracy: 0.9877499999999999

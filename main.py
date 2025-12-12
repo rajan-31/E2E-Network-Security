@@ -6,7 +6,11 @@ ca = certifi.where()
 
 from dotenv import load_dotenv
 load_dotenv()
-mongo_db_url = os.getenv("MONGO_DB_URL")
+mongo_db_url = os.getenv("MONGODB_URL_KEY")
+MLFLOW_TRACKING_USERNAME=os.getenv("MLFLOW_TRACKING_USERNAME")
+MLFLOW_TRACKING_PASSWORD=os.getenv("MLFLOW_TRACKING_PASSWORD")
+
+print(MLFLOW_TRACKING_PASSWORD)
 
 
 from src.NetworkSecurity.exception.exception import NetworkSecurityException
@@ -18,7 +22,6 @@ from fastapi import FastAPI, Request
 from uvicorn import run as app_run
 from fastapi.responses import Response
 from starlette.responses import RedirectResponse
-import pandas as pd
 import numpy as np
 import mlflow
 import pickle
@@ -36,6 +39,13 @@ app.add_middleware(
 )
 
 from fastapi.templating import Jinja2Templates
+
+import dagshub
+
+dagshub.init(repo_owner='rajan-31',
+             repo_name='E2E-Network-Security', 
+             mlflow=True)
+
 
 templates = Jinja2Templates(directory="./templates")
 
@@ -66,6 +76,7 @@ def predict(features: dict):
 async def predict_route(request: Request):
     
     form_data = await request.form()
+    print("form_data",form_data)
 
     # Convert form data to a dictionary with key-value pairs
     features = {key: float(value) for key, value in form_data.items()}
@@ -79,19 +90,27 @@ async def predict_route(request: Request):
     values = scaler.transform(values)
     
     # MLflow settings (update these with your settings)
-    mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI")  
+    mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI")
     model_name = "Best Model"
+
+    print("mlflow_tracking_uri",mlflow_tracking_uri)
+
 
     # Load model from MLflow
     mlflow.set_tracking_uri(mlflow_tracking_uri)
     try:
-        mlflow.pyfunc.load_model(f"models:/{model_name}/latest")
+        # Option 1: Load the latest production model
+        print("before loading model")
+        model = mlflow.pyfunc.load_model(f"models:/{model_name}/latest")
+        print("model",model)
         # Make prediction
         prediction = model.predict(values)
         
         return {"prediction": int(prediction)}
     
     except Exception as e:
+
+        print("exception triggered")
         return {"error": str(e)}
 
 
