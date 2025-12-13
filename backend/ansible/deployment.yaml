@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: my-container
-          image: rajan31/my-im:latest
+          image: rajan31/my-image:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8000    # Must match Service's targetPort

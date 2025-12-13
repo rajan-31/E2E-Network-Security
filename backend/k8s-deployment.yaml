@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: my-container
-          image: adityaav80/my-image:latest
+          image: rajan31/my-image:latest
           ports:
             - containerPort: 8000    # Must match Service's targetPort
           envFrom:
