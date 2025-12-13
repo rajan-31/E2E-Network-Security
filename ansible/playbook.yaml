@@ -20,7 +20,7 @@
         name:
           - kubernetes
 
-    - name: Activate Conda environment
+    - name: Activate Python environment
       shell: |
         source /home/rajan/0.Projects/SPE-final-project/.e2e_nw_sec/bin/activate
         python3 -m pip show kubernetes

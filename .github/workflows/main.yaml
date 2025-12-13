@@ -57,7 +57,7 @@ jobs:
       - name: Install Dependencies and Run Ansible
         run: |
           # Install required dependencies from requirements.txt if not already set up
-          pip install -r requirements.txt
+          # pip install -r requirements.txt
 
           # Create a temporary file with the Vault password (from GitHub secret)
           echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}" > ~/.vault_password_file
