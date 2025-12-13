@@ -64,3 +64,4 @@ jobs:
 
           # Run the Ansible playbook using the vault password file
           ansible-playbook -i ansible/inventory ansible/playbook.yaml --vault-password-file ~/.vault_password_file
+
