@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-app
-  namespace: default
 spec:
   replicas: 2
   selector:
@@ -15,18 +14,23 @@ spec:
     spec:
       containers:
         - name: my-container
-          image: rajan31/my-image:latest
+          image: rajan31/my-im:latest
+          imagePullPolicy: Always
           ports:
-            - containerPort: 8000 # Must match Service's targetPort
+            - containerPort: 8000    # Must match Service's targetPort
+          resources:
+            requests:
+              cpu: "50m"  # CPU request (e.g., 50 milliCPU = 0.05 CPU cores)
+            limits:
+              cpu: "200m"  # Optional: CPU limit (e.g., 200 milliCPU = 0.2 CPU cores)
           envFrom:
-            - secretRef: # Loads all variables from the Secret
-                name: my-app-secret # Replace with your Secret name
+            - secretRef:             # Loads all variables from the Secret
+                name: my-app-secret  # Replace with your Secret name
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: my-service
-  namespace: default
 spec:
   selector:
     app: my-app
