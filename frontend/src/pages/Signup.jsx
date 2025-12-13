@@ -14,7 +14,7 @@ function Signup() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8000/signup', {
+      const response = await axios.post('http://localhost:9009/signup', {
         email,
         password,
         role: 'customer', // Ensure role is always 'customer' on signup

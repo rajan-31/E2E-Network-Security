@@ -27,7 +27,7 @@ function CustomerDashboard() {
   setLoading(true)
   setPredictionResult(null)
 
-  fetch('http://localhost:8000/predict', {
+  fetch('http://localhost:9009/predict', {
     method: 'POST',
     body: formData,
   })

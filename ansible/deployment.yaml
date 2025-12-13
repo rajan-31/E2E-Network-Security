@@ -17,7 +17,7 @@ spec:
           image: rajan31/my-image:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8000    # Must match Service's targetPort
+            - containerPort: 9009    # Must match Service's targetPort
           resources:
             requests:
               cpu: "50m"  # CPU request (e.g., 50 milliCPU = 0.05 CPU cores)
@@ -37,5 +37,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8000
+      targetPort: 9009
   type: NodePort

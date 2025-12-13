@@ -16,7 +16,7 @@ spec:
         - name: my-container
           image: rajan31/my-image:latest
           ports:
-            - containerPort: 8000    # Must match Service's targetPort
+            - containerPort: 9009    # Must match Service's targetPort
           envFrom:
             - secretRef:             # Loads all variables from the Secret
                 name: my-app-secret  # Replace with your Secret name
@@ -31,5 +31,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8000
+      targetPort: 9009
   type: NodePort

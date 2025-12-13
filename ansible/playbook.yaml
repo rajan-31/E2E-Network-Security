@@ -6,7 +6,7 @@
   vars:
     image_name: my_image
     container_name: my-container
-    app_port: 8000
+    app_port: 9009
     host_port: 9009
     env_file_dest: "{{ playbook_dir }}/.env"
     hpa_config_file: "{{ playbook_dir }}/hpa.yaml"

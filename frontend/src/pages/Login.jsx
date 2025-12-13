@@ -16,7 +16,7 @@ function Login() {
 
     try {
       // Send login request to FastAPI
-      const res = await axios.post('http://localhost:8000/login', { email, password })
+      const res = await axios.post('http://localhost:9009/login', { email, password })
       
       // Extract the token from the response
       const { access_token } = res.data

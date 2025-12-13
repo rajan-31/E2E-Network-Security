@@ -22,7 +22,7 @@ function DeveloperDashboard() {
     setLoading(true)
     setMessage(null)
 
-    fetch('http://localhost:8000/train')
+    fetch('http://localhost:9009/train')
       .then(res => res.text())
       .then(data => {
         if (data.includes("Training completed successfully")) {
