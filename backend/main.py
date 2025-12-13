@@ -23,8 +23,9 @@ from src.NetworkSecurity.logging.logger import logger
 from src.NetworkSecurity.pipeline.training_pipeline import TrainingPipeline
 from src.NetworkSecurity.exception.exception import NetworkSecurityException
 
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 print(jwt.__file__)
 
@@ -126,19 +127,22 @@ def run_pipeline_wrapper(user_email: str):
 
 def send_completion_email(user_email: str, result):
     if result:
-        message = Mail(
-            from_email=os.getenv('MAIL_DEFAULT_SENDER'),
-            to_emails=user_email,
-            subject='Training Complete',
-            html_content="""
-                <h1>Training Complete</h1>
-                <p>Your training is complete</p>
-            """
-        )
+        msg = MIMEMultipart()
+        msg['From'] = os.getenv('SENDER_EMAIL')
+        msg['To'] = user_email
+        msg['Subject'] = "Training Complete"
+
+        body = f"""<h1>Training Completed Successfully</h1>
+                   <p>Your model training has completed successfully.</p>
+                """
+
+        msg.attach(MIMEText(body, 'html'))
+
         try:
-            sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-            response = sg.send(message)
-            print(response.status_code)
+            with smtplib.SMTP_SSL(os.getenv('SMTP_SERVER'), int(os.getenv('SMTP_PORT'))) as server:
+                server.login(os.getenv('SENDER_EMAIL'), os.getenv('SENDER_PASSWORD'))
+                server.send_message(msg)
+                print("Email sent successfully")
         except Exception as e:
             print(str(e))
 
