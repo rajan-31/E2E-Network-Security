@@ -3,10 +3,9 @@
     name:
       - kubernetes
 
-- name: Activate conda and verify
+- name: Activate python environment and verify
   shell: |
-    source /home/rajan/miniconda3/etc/profile.d/conda.sh
-    conda activate network_security
+    source /home/rajan/0.Projects/SPE-final-project/backend/.e2e_nw_sec/bin/activate
     python3 -m pip show kubernetes
   args:
     executable: /bin/bash

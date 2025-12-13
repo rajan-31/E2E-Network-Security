@@ -4,54 +4,21 @@
   vars_files:
     - vars/vault-env.yaml
   vars:
-    image_name: my_image
-    container_name: my-container
-    app_port: 9009
-    host_port: 9009
+    backend_image: "rajan31/backend-image:latest"
+    frontend_image: "rajan31/frontend-image:latest"
+    backend_container: backend-container
+    frontend_container: frontend-container
+    backend_port: 9009
+    frontend_port: 5173
+    host_backend_port: 9009
+    host_frontend_port: 5173
     env_file_dest: "{{ playbook_dir }}/.env"
     hpa_config_file: "{{ playbook_dir }}/hpa.yaml"
-    DOCKER_HOST: "unix:///var/run/docker.sock"  
-
-  tasks:
-    - name: install pre-requisites
-      pip:
-        name:
-          - kubernetes
-
-    - name: Activate Python environment
-      shell: |
-        source /home/rajan/0.Projects/SPE-final-project/.e2e_nw_sec/bin/activate
-        python3 -m pip show kubernetes
-      args:
-        executable: /bin/bash
-
-    - name: Copy .env to target location
-      ansible.builtin.copy:
-        content: "{{ env_vars }}"
-        dest: "{{ env_file_dest }}"
-
-    - name: Build Docker image
-      community.docker.docker_image:
-        name: "{{ image_name }}"
-        build:
-          path: "{{ playbook_dir }}/.."
-        source: build
-        docker_host: "{{ DOCKER_HOST }}"  # Specify docker_host explicitly
-
-    - name: Remove existing container if any
-      community.docker.docker_container:
-        name: "{{ container_name }}"
-        state: absent
-        force_kill: true
-
-    - name: Apply Kubernetes deployment
-      k8s:
-        state: present
-        src: "{{ playbook_dir }}/deployment.yaml"  # Path to your Kubernetes deployment file
-        namespace: default
+    DOCKER_HOST: "unix:///var/run/docker.sock"
 
 
-    - name: Apply HPA configuration
-      k8s:
-        state: present
-        src: "{{ hpa_config_file }}"
+  roles:
+    - role: prereqs
+    - role: docker
+    - role: k8s
+    # - role: hpa
