@@ -60,5 +60,3 @@
               Replace_Dots    On
               Retry_Limit     False
               Suppress_Type_Name On
-
-# Removed all Metricbeat and Kubernetes dashboard setup tasks as requested
