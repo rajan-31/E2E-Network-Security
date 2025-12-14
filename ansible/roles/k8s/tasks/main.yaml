@@ -16,6 +16,12 @@
     src: deployment.yaml
     namespace: default
 
+- name: Force rollout restart for backend deployment
+  command: kubectl rollout restart deployment/backend-deployment -n default
+
+- name: Force rollout restart for frontend deployment
+  command: kubectl rollout restart deployment/frontend-deployment -n default
+
 - name: Apply Kubernetes Ingress
   k8s:
     state: present
