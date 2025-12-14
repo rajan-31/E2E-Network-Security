@@ -122,7 +122,7 @@ async def train_route(request: Request, background_tasks: BackgroundTasks):
         auth_header = request.headers.get("Authorization")    
         token = auth_header.split(" ")[1]
         decoded = jwt.decode(token, options={"verify_signature": False})
-        email = decoded.get("sub")
+        email = decoded.get("email")
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
 
@@ -139,26 +139,32 @@ def run_pipeline_wrapper(user_email: str):
         logger.exception(e)
 
 def send_completion_email(user_email: str, result):
+    if not result:
+        logger.warning(f"Training failed for {user_email}, email not sent")
+        return
+        
+    if not user_email:
+        logger.error("No user email provided, cannot send completion email")
+        return
 
-    if result:
-        msg = MIMEMultipart()
-        msg['From'] = os.getenv('SENDER_EMAIL')
-        msg['To'] = user_email
-        msg['Subject'] = "Training Complete"
+    msg = MIMEMultipart()
+    msg['From'] = os.getenv('SENDER_EMAIL')
+    msg['To'] = user_email
+    msg['Subject'] = "Training Complete"
 
-        body = f"""<h1>Training Completed Successfully</h1>
-                   <p>Your model training has completed successfully.</p>
-                """
+    body = f"""<h1>Training Completed Successfully</h1>
+                <p>Your model training has completed successfully.</p>
+            """
 
-        msg.attach(MIMEText(body, 'html'))
+    msg.attach(MIMEText(body, 'html'))
 
-        try:
-            with smtplib.SMTP_SSL(os.getenv('SMTP_SERVER'), int(os.getenv('SMTP_PORT'))) as server:
-                server.login(os.getenv('SENDER_EMAIL'), os.getenv('SENDER_PASSWORD'))
-                server.send_message(msg)
-                print("Email sent successfully")
-        except Exception as e:
-            print(str(e))
+    try:
+        with smtplib.SMTP_SSL(os.getenv('SMTP_SERVER'), int(os.getenv('SMTP_PORT'))) as server:
+            server.login(os.getenv('SENDER_EMAIL'), os.getenv('SENDER_PASSWORD'))
+            server.send_message(msg)
+            logger.info(f"Training completion email sent successfully to {user_email}")
+    except Exception as e:
+        logger.error(f"Failed to send training completion email to {user_email}: {str(e)}")
 
 
 @app.post("/api/predict")
