@@ -99,13 +99,13 @@ env_vars:
 ### App demo
 
 Customer Login and Prediction
-<video src="pictures/demo_customer_login_and_predict.webm" width="600" controls muted autoplay loop></video>
+![demo_login](pictures/demo_customer_login_and_predict.gif)
 
 Customer Signup
-<video src="pictures/demo_customer_signup.webm" width="600" controls muted autoplay loop></video>
+![demo_signup](pictures/demo_customer_signup.gif)
 
 Developer Login and Train
-<video src="pictures/demo_developer_login_and_train.webm" width="600" controls muted autoplay loop></video>
+![developer_dashboard](pictures/demo_developer_login_and_train.gif)
 
 ELK Intergration
 ![kibana_dashboard](pictures/ELK.png)
